@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:#FAF7F4;}
+html,body{height:100%;font-family:'Nunito',sans-serif;background:#FAF7F4;}
 
 :root{
   --orange:#EA5B0C;
@@ -24,10 +24,10 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 /* ── Layout shell ── */
 .shell{
   display:flex;flex-direction:column;
-  height:100dvh;height:100vh;
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
   max-width:480px;margin:0 auto;
   background:#FAF7F4;
-  position:relative;
 }
 
 /* ── Header ── */
@@ -50,7 +50,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 /* ── Chat area ── */
 .chat{
   flex:1;overflow-y:auto;
-  padding:16px 14px 12px;
+  padding:16px 14px 180px;
   display:flex;flex-direction:column;gap:0;
   -webkit-overflow-scrolling:touch;
   scroll-behavior:smooth;
@@ -77,13 +77,16 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 
 /* ── Input area ── */
 .inp{
-  flex-shrink:0;
+  position:fixed;
+  bottom:0;left:0;right:0;
+  max-width:480px;margin:0 auto;
   background:#FAF7F4;
   border-top:1px solid var(--border);
   padding:10px 14px 14px;
   display:flex;flex-direction:column;gap:8px;
-  z-index:10;
+  z-index:20;
   padding-bottom:max(14px, env(safe-area-inset-bottom));
+  box-shadow:0 -4px 16px rgba(0,0,0,0.06);
 }
 .opts{display:flex;flex-wrap:wrap;gap:7px;}
 .opt{
@@ -174,7 +177,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 </div>
 
 <script>
-const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/madeiramadeira.com.br/s/AKfycbx89CZKp_rfa6aVnySc-5su2W7YQAMZvo5vIQ0v5SM4g4ytmyxgsyu53Ej861Q3wkUU/exec';
+const APPS_SCRIPT_URL = 'COLE_A_URL_DO_APPS_SCRIPT_AQUI';
 const TOTAL = 15;
 let step = 0, answers = {}, multi = [], typing = false;
 
@@ -452,7 +455,18 @@ async function showEnd(){
   chat.appendChild(card);scrollDown();
 }
 
-window.onload=()=>{updProg();nextStep();};
+window.onload=()=>{
+  // Fix mobile viewport with keyboard
+  function fixHeight(){
+    const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    document.querySelector('.shell').style.height = vh + 'px';
+    document.querySelector('.shell').style.top = (window.visualViewport ? window.visualViewport.offsetTop : 0) + 'px';
+  }
+  fixHeight();
+  if(window.visualViewport) window.visualViewport.addEventListener('resize', fixHeight);
+  else window.addEventListener('resize', fixHeight);
+  updProg();nextStep();
+};
 </script>
 </body>
 </html>
