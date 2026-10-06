@@ -310,8 +310,9 @@ async function run(){
     await bot(['Que bom! 😊 O que mais te ajudou a se sentir preparado(a) para o serviço?<span class="hint">Marque até 3 opções</span>']);
     answers.p2_1 = await multi([
       'As informações sobre dia e horário',
+      'As informações sobre o profissional',
       'Saber como o serviço vai funcionar',
-      'Saber o que precisava preparar antes',
+      'Saber como preparar o local do serviço',
       'As mensagens e lembretes que recebi',
       'Já conhecia esse tipo de serviço e sabia o que esperar',
       'Nada específico, já estava tudo claro'
@@ -322,12 +323,11 @@ async function run(){
     answers.p2_2 = await multi([
       'Saber melhor o horário de chegada do profissional',
       'Ter mais informações sobre o profissional',
-      'Saber o que preciso preparar',
+      'Saber como preparar o local do serviço',
       'Entender como o serviço vai acontecer',
       'Saber o que acontece se houver algum imprevisto',
-      'Outra coisa',
-      'Não sei dizer'
-    ], 3, ['Não sei dizer']);
+      'Outra coisa'
+    ], 3, []);
     if (answers.p2_2.includes('Outra coisa')){
       await bot(['Conta pra gente o que seria 👇']);
       answers.p2_2_outra = await text('Escreva aqui…');
