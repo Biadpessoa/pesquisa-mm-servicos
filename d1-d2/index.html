@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pesquisa MadeiraMadeira Serviços</title>
+<meta name="description" content="São só 3 perguntinhas rápidas sobre o seu serviço.">
+<meta property="og:title" content="MadeiraMadeira Serviços 🧡">
+<meta property="og:description" content="São só 3 perguntinhas rápidas sobre o seu serviço.">
+<meta name="theme-color" content="#EA5B0C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script>
+  /* CONFIGURAÇÃO: cole aqui a URL do Apps Script (termina em /exec) */
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlKy-Z-shnf0AQ0vJMgTQNjc37qIxMeBpCtkO1GnLix1b1wBQtVoVtIrcotGj7N15x/exec';
+  const PESQUISA_ID = 'generalista-d1-d2';
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;font-family:'Nunito',system-ui,sans-serif;background:#FAF7F4;}
+:root{
+  --orange:#EA5B0C;--orange-light:#FEF0E7;--dark:#1A1A2E;--muted:#8A8A9A;
+  --border:#EDE8E2;--white:#FFFFFF;--shadow:0 2px 12px rgba(234,91,12,0.10);
+}
+.shell{display:flex;flex-direction:column;width:100%;max-width:480px;margin:0 auto;height:100vh;height:100dvh;background:#FAF7F4;overflow:hidden;}
+
+/* Header */
+.hdr{flex-shrink:0;background:#fff;border-bottom:3px solid var(--orange);padding:12px 16px 10px;box-shadow:var(--shadow);z-index:20;}
+.hdr-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.logo{display:inline-flex;flex-direction:column;align-items:flex-end;background:var(--orange);color:#fff;border-radius:6px;padding:5px 9px 4px;line-height:1;}
+.logo b{font-size:12px;font-weight:800;letter-spacing:-.2px;}
+.logo b span{font-weight:600;opacity:.92;}
+.logo small{font-size:9px;font-weight:600;margin-top:1px;}
+.hdr-status{font-size:11px;color:#4CAF50;font-weight:700;margin-left:auto;}
+.prog-wrap{display:flex;align-items:center;gap:10px;}
+.prog{flex:1;height:4px;background:var(--border);border-radius:4px;overflow:hidden;}
+.prog-bar{height:100%;width:0;background:var(--orange);border-radius:4px;transition:width .4s ease;}
+.prog-lbl{font-size:11px;color:var(--muted);font-weight:600;min-width:26px;text-align:right;}
+
+/* Chat */
+.chat{flex:1;overflow-y:auto;padding:16px 16px 8px;scroll-behavior:smooth;}
+.date-lbl{text-align:center;font-size:11px;color:var(--muted);margin:4px 0 14px;}
+.row{display:flex;margin-bottom:3px;opacity:0;transform:translateY(8px);animation:up .3s ease forwards;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.row.gap{margin-bottom:12px;}
+@keyframes up{to{opacity:1;transform:translateY(0);}}
+.bbl{max-width:82%;padding:10px 14px;font-size:14px;line-height:1.55;word-break:break-word;border-radius:18px;}
+.bbl.bot{background:#fff;color:var(--dark);border-bottom-left-radius:4px;box-shadow:var(--shadow);}
+.bbl.user{background:var(--orange);color:#fff;border-bottom-right-radius:4px;}
+.bbl .hint{display:block;font-size:12px;color:var(--muted);margin-top:4px;}
+.bbl.typing{padding:12px 16px;display:flex;gap:4px;align-items:center;}
+.dot{width:7px;height:7px;background:var(--muted);border-radius:50%;animation:bounce 1.2s infinite;}
+.dot:nth-child(2){animation-delay:.2s;}.dot:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.5;}30%{transform:translateY(-4px);opacity:1;}}
+
+/* Área de resposta */
+.input-area{flex-shrink:0;max-height:64vh;max-height:64dvh;overflow-y:auto;background:#FAF7F4;padding:10px 16px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -6px 14px rgba(250,247,244,.9);}
+.input-area:empty{display:none;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chips.col{flex-direction:column;}
+.chip{font-family:inherit;font-size:14px;color:var(--dark);background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:9px 14px;cursor:pointer;text-align:left;line-height:1.35;transition:border-color .15s,background .15s;}
+.chip:active{transform:scale(.98);}
+.chip.on{border-color:var(--orange);background:var(--orange-light);}
+.chip.on::before{content:'✓ ';color:var(--orange);font-weight:800;}
+.chip:disabled{opacity:.45;cursor:default;}
+.ms-hint{font-size:12px;color:var(--muted);margin:2px 2px 8px;}
+.btn{font-family:inherit;font-size:15px;font-weight:800;color:#fff;background:var(--orange);border:0;border-radius:14px;padding:12px 18px;cursor:pointer;width:100%;margin-top:10px;}
+.btn:disabled{background:#F3B48F;cursor:default;}
+.btn.ghost{background:transparent;color:var(--orange);border:1.5px solid var(--orange);margin-top:8px;font-weight:700;}
+.txt{width:100%;font-family:inherit;font-size:15px;color:var(--dark);background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:10px 14px;resize:none;min-height:76px;max-height:160px;outline:none;}
+.txt:focus{border-color:var(--orange);}
+.err{font-size:12px;color:#C0392B;margin-top:6px;}
+/* Celular: botão de confirmar sempre visível e ajustes para telas baixas */
+.input-area .btn:not(.ghost){position:sticky;bottom:0;box-shadow:0 -8px 12px #FAF7F4;}
+.input-area .btn.ghost{background:#FAF7F4;}
+.txt{font-size:16px;} /* 16px evita o zoom automático do iPhone ao tocar no campo */
+@media (max-height:700px){
+  .hdr{padding:8px 16px 8px;}
+  .hdr-top{margin-bottom:6px;}
+  .chat{padding:10px 14px 6px;}
+  .date-lbl{margin:2px 0 8px;}
+  .input-area{padding:8px 14px calc(8px + env(safe-area-inset-bottom));}
+  .chips{gap:6px;}
+  .chip{padding:7px 12px;font-size:13.5px;border-radius:12px;}
+  .btn{padding:11px 16px;margin-top:8px;}
+  .txt{min-height:60px;}
+}
+@media (max-height:420px){
+  .input-area{max-height:72dvh;}
+  .hdr-top{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="hdr">
+    <div class="hdr-top">
+      <div class="logo" aria-label="MadeiraMadeira Serviços"><b>madeira<span>madeira</span></b><small>serviços</small></div>
+      <div class="hdr-status">● online</div>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog"><div class="prog-bar" id="bar"></div></div>
+      <div class="prog-lbl" id="plbl">0/3</div>
+    </div>
+  </header>
+  <main class="chat" id="chat"><div class="date-lbl">Hoje</div></main>
+  <div class="input-area" id="input"></div>
+</div>
+
+<script>
+/* ---------- Parâmetros do link (opcionais) ----------
+   ?servico=montagem → nome do serviço usado no texto
+   (pesquisa anônima: nenhum dado do cliente é enviado)
+------------------------------------------------------ */
+const qs = new URLSearchParams(location.search);
+const ctx = {
+  servico: (qs.get('servico') || '').slice(0, 60),
+  origem: (qs.get('utm_source') || qs.get('origem') || 'whatsapp').slice(0, 40)
+};
+const startedAt = new Date();
+const answers = { p2: '', p2_1: [], p2_2: [], p2_2_outra: '', p3: '' };
+const TOTAL = 3;
+
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const doneKey = 'mm-pesquisa-' + PESQUISA_ID + '-' + 'v1';
+
+function store(get, val){ try{ return get ? localStorage.getItem(doneKey) : localStorage.setItem(doneKey, val); }catch(e){ return null; } }
+
+function progress(n){
+  document.getElementById('bar').style.width = (n / TOTAL * 100) + '%';
+  document.getElementById('plbl').textContent = n + '/' + TOTAL;
+}
+function scrollDown(){ requestAnimationFrame(() => chat.scrollTop = chat.scrollHeight); }
+
+function addRow(who, html, gap){
+  const row = document.createElement('div');
+  row.className = 'row ' + who + (gap ? ' gap' : '');
+  const b = document.createElement('div');
+  b.className = 'bbl ' + who;
+  if (who === 'user') b.textContent = html; else b.innerHTML = html;
+  row.appendChild(b); chat.appendChild(row); scrollDown();
+  return row;
+}
+async function bot(msgs){
+  for (let i = 0; i < msgs.length; i++){
+    const t = document.createElement('div');
+    t.className = 'row bot';
+    t.innerHTML = '<div class="bbl bot typing"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>';
+    chat.appendChild(t); scrollDown();
+    await sleep(Math.min(1300, 450 + msgs[i].replace(/<[^>]+>/g,'').length * 12));
+    t.remove();
+    addRow('bot', msgs[i], i === msgs.length - 1);
+    await sleep(180);
+  }
+}
+const user = text => addRow('user', text, true);
+const clearInput = () => { input.innerHTML = ''; };
+
+/* Escolha única: resolve com o texto da opção */
+function single(options, column){
+  return new Promise(res => {
+    clearInput();
+    const box = document.createElement('div');
+    box.className = 'chips' + (column ? ' col' : '');
+    options.forEach(o => {
+      const c = document.createElement('button');
+      c.className = 'chip'; c.type = 'button'; c.textContent = o;
+      c.onclick = () => { clearInput(); user(o); res(o); };
+      box.appendChild(c);
+    });
+    input.appendChild(box); scrollDown();
+  });
+}
+
+/* Múltipla escolha (até max) com botão Confirmar */
+function multi(options, max, exclusive){
+  return new Promise(res => {
+    clearInput();
+    const sel = new Set();
+    const hint = document.createElement('div');
+    hint.className = 'ms-hint'; hint.textContent = 'Escolha até ' + max + ' opções';
+    const box = document.createElement('div'); box.className = 'chips col';
+    const btn = document.createElement('button');
+    btn.className = 'btn'; btn.type = 'button'; btn.textContent = 'Confirmar →'; btn.disabled = true;
+    const chips = options.map(o => {
+      const c = document.createElement('button');
+      c.className = 'chip'; c.type = 'button'; c.textContent = o;
+      c.onclick = () => {
+        if (sel.has(o)) sel.delete(o);
+        else {
+          if (exclusive.includes(o)) sel.clear();
+          else exclusive.forEach(x => sel.delete(x));
+          if (sel.size >= max) return;
+          sel.add(o);
+        }
+        render();
+      };
+      box.appendChild(c); return c;
+    });
+    function render(){
+      chips.forEach(c => {
+        const on = sel.has(c.textContent);
+        c.classList.toggle('on', on);
+        c.disabled = !on && sel.size >= max;
+      });
+      btn.disabled = sel.size === 0;
+      hint.textContent = sel.size ? sel.size + ' de ' + max + ' selecionada' + (sel.size > 1 ? 's' : '') : 'Escolha até ' + max + ' opções';
+    }
+    btn.onclick = () => {
+      const picked = options.filter(o => sel.has(o));
+      clearInput(); user(picked.join(' · ')); res(picked);
+    };
+    input.append(hint, box, btn); scrollDown();
+  });
+}
+
+/* Texto livre, com opção de pular */
+function text(placeholder, skipLabel){
+  return new Promise(res => {
+    clearInput();
+    const ta = document.createElement('textarea');
+    ta.className = 'txt'; ta.placeholder = placeholder; ta.maxLength = 1500; ta.rows = 3;
+    const btn = document.createElement('button');
+    btn.className = 'btn'; btn.type = 'button'; btn.textContent = 'Enviar →'; btn.disabled = true;
+    ta.oninput = () => { btn.disabled = !ta.value.trim(); };
+    btn.onclick = () => { const v = ta.value.trim(); clearInput(); user(v); res(v); };
+    input.append(ta, btn);
+    if (skipLabel){
+      const s = document.createElement('button');
+      s.className = 'btn ghost'; s.type = 'button'; s.textContent = skipLabel;
+      s.onclick = () => { clearInput(); user(skipLabel); res(''); };
+      input.appendChild(s);
+    }
+    scrollDown();
+  });
+}
+
+/* Envio para o Google Sheets (Apps Script) */
+async function send(){
+  const payload = {
+    pesquisa: PESQUISA_ID,
+    enviado_em: new Date().toISOString(),
+    iniciado_em: startedAt.toISOString(),
+    duracao_seg: Math.round((Date.now() - startedAt) / 1000),
+    servico: ctx.servico,
+    origem: ctx.origem,
+    p2_momento: answers.p2,
+    p2_1_ajudou: answers.p2_1.join(' | '),
+    p2_2_ajudaria: answers.p2_2.join(' | '),
+    p2_2_outra: answers.p2_2_outra,
+    p3_aberta: answers.p3,
+    dispositivo: navigator.userAgent.slice(0, 200)
+  };
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('http') !== 0){ console.log('[pesquisa] modo teste, não enviado:', payload); return true; }
+  for (let i = 0; i < 3; i++){
+    try{
+      await fetch(APPS_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+      return true;
+    }catch(e){ await sleep(1200 * (i + 1)); }
+  }
+  return false;
+}
+
+async function finish(){
+  clearInput();
+  let ok = await send();
+  while (!ok){
+    await bot(['Ops, parece que a internet oscilou e não consegui salvar suas respostas 😕']);
+    await single(['Tentar de novo']);
+    ok = await send();
+  }
+  store(false, '1');
+  await bot([
+    'Obrigada por responder 🧡',
+    'Suas respostas vão nos ajudar a melhorar essa experiência. Agora é só aguardar o dia do serviço!',
+    'Se tiver qualquer problema, entre em contato pelos nossos canais.'
+  ]);
+}
+
+/* ---------------- Roteiro ---------------- */
+async function run(){
+  if (store(true)){
+    await bot(['Oi! 🧡', 'Você já respondeu essa pesquisa. Muito obrigada pela ajuda!']);
+    return;
+  }
+  const serv = ctx.servico ? 'de <b>' + ctx.servico.replace(/[<>&"]/g,'') + '</b> ' : '';
+  await bot([
+    'Olá! 🧡',
+    'Seu serviço ' + serv + 'está chegando e queremos entender se as informações que enviamos estão ajudando você a se preparar.',
+    'São só <b>3 perguntinhas rápidas</b>. Pode ser sincero(a), tá? 🙏'
+  ]);
+  await single(['Vamos lá! 😊']);
+
+  // P2
+  await bot(['Pensando no seu serviço, qual dessas frases mais combina com você neste momento?']);
+  const P2 = [
+    'Sei o que vai acontecer e já estou com tudo organizado',
+    'Acho que está tudo certo, mas ainda tenho algumas dúvidas',
+    'Ainda tem coisas que não sei como vão funcionar',
+    'Não sei muito bem o que esperar no dia'
+  ];
+  answers.p2 = await single(P2, true);
+  progress(1);
+
+  if (answers.p2 === P2[0]){
+    // P2.1
+    await bot(['Que bom! 😊 O que mais te ajudou a se sentir preparado(a) para o serviço?<span class="hint">Marque até 3 opções</span>']);
+    answers.p2_1 = await multi([
+      'As informações sobre dia e horário',
+      'Saber como o serviço vai funcionar',
+      'Saber o que precisava preparar antes',
+      'As mensagens e lembretes que recebi',
+      'Já conhecia esse tipo de serviço e sabia o que esperar',
+      'Nada específico, já estava tudo claro'
+    ], 3, ['Nada específico, já estava tudo claro']);
+  } else {
+    // P2.2
+    await bot(['Entendi! O que mais ajudaria você a se sentir preparado(a)?<span class="hint">Marque até 3 opções</span>']);
+    answers.p2_2 = await multi([
+      'Saber melhor o horário de chegada do profissional',
+      'Ter mais informações sobre o profissional',
+      'Saber o que preciso preparar',
+      'Entender como o serviço vai acontecer',
+      'Saber o que acontece se houver algum imprevisto',
+      'Outra coisa',
+      'Não sei dizer'
+    ], 3, ['Não sei dizer']);
+    if (answers.p2_2.includes('Outra coisa')){
+      await bot(['Conta pra gente o que seria 👇']);
+      answers.p2_2_outra = await text('Escreva aqui…');
+    }
+  }
+  progress(2);
+
+  // P3
+  await bot(['Tem alguma outra informação que você gostaria de saber antes do profissional chegar?']);
+  answers.p3 = await text('Escreva aqui…', 'Não, está tudo certo');
+  progress(3);
+
+  await finish();
+}
+// Quando o teclado abre/fecha, mantém a última mensagem visível
+if (window.visualViewport) visualViewport.addEventListener('resize', scrollDown);
+run();
+</script>
+</body>
+</html>
